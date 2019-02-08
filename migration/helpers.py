@@ -52,7 +52,7 @@ def edit_src_and_href_paths(infile):
         # Find the CSS to remove later
         return tag.name == 'link'
 
-    prefix = '{{ site.base_url }}/'
+    prefix = '{{ site.baseurl }}/'
 
     soup = BeautifulSoup(open(infile, encoding='utf8'), 'html.parser')
     tags = soup.find_all(has_src_or_href)

@@ -2,12 +2,17 @@
 import sys
 import os
 import shutil
+import io
 from migration import helpers
 
 
 def main(argv):
     input_dir = argv[0]
     output_dir = argv[1]
+    try:
+        windows_encoding = argv[2] is not None
+    except IndexError:
+        windows_encoding = False
 
     print("Input directory: " + input_dir)
     print("Output directory: " + output_dir)
@@ -31,6 +36,14 @@ def main(argv):
                 shutil.rmtree(filepath)
             except OSError:
                 os.remove(filepath)
+
+    if windows_encoding:
+        print("Encoding to Windows-1252...")
+        for filename in helpers.get_html_files(output_dir):
+            with io.open(filename, mode="r", encoding="utf8") as fd:
+                content = fd.read()
+            with io.open(filename, mode="w", encoding="cp1252", errors='replace') as fd:
+                fd.write(content)
 
     print('Done.')
     exit()
