@@ -95,9 +95,16 @@ def remove_title_tag(infile):
 
 
 def add_header_markup(infile):
+    """
+    Adds the frontmatter to the posts. Adds field to hide the excerpts for these posts, as Jekyll cannot correctly
+    display excerpts from the HTML. (It expects markdown).
+    :param infile: String with file path.
+    :return:
+    """
     md_markup = """\
 ---
 layout: post
+hide_excerpt: true
 ---
 """
     with open(infile, 'r', encoding='utf-8') as original:
@@ -115,6 +122,6 @@ def _write_soup(file_path, soup):
     """
     with open(file_path, 'w+', encoding='utf-8', errors='replace') as f:
         f.truncate(0)
-        f.write(str(soup.prettify()))
+        f.write(str(soup))
 
     return None
